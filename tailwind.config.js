@@ -52,6 +52,25 @@ export default {
           600: '#b45309',
           DEFAULT: '#d97706',
         },
+
+        // ── Legacy "book-*" design tokens ─────────────────────────────────
+        // These map the old component library tokens to the real palette so
+        // all existing components render correctly without mass refactoring.
+        'book-bg':       '#fdf8f0',   // same as cream DEFAULT
+        'book-card':     '#ffffff',
+        'book-muted':    '#f5f0e8',
+        'book-border':   '#e8e0d4',
+        'book-charcoal': '#1c1917',   // near-black warm tone
+        'book-burgundy': '#7f1d1d',   // same as accent DEFAULT
+        'book-navy':     '#1e1b4b',   // same as primary DEFAULT
+        'book-amber':    '#d97706',   // same as amber DEFAULT
+        'book-success':  '#16a34a',
+        'book-error':    '#dc2626',
+        'book-stone': {
+          300: '#c4b5a0',
+          500: '#8c7660',
+          700: '#5c4a38',
+        },
       },
       fontFamily: {
         sans: ['"Inter"', 'ui-sans-serif', 'system-ui', '-apple-system', 'sans-serif'],
@@ -81,10 +100,14 @@ export default {
         'btn':  '0.5rem',
       },
       boxShadow: {
-        'card':     '0 2px 8px 0 rgba(30,27,75,0.08)',
-        'card-hover': '0 8px 24px 0 rgba(30,27,75,0.16)',
-        'nav':      '0 1px 4px 0 rgba(30,27,75,0.10)',
-        'modal':    '0 20px 60px 0 rgba(30,27,75,0.20)',
+        'card':           '0 2px 8px 0 rgba(30,27,75,0.08)',
+        'card-hover':     '0 8px 24px 0 rgba(30,27,75,0.16)',
+        'nav':            '0 1px 4px 0 rgba(30,27,75,0.10)',
+        'modal':          '0 20px 60px 0 rgba(30,27,75,0.20)',
+        // Legacy book-* shadow tokens
+        'book-card':      '0 2px 8px 0 rgba(30,27,75,0.08)',
+        'book':           '0 8px 24px 0 rgba(30,27,75,0.16)',
+        'book-lg':        '0 12px 32px 0 rgba(30,27,75,0.20)',
       },
       screens: {
         'xs': '375px',

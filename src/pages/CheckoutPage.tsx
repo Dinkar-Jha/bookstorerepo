@@ -383,11 +383,11 @@ export const CheckoutPage: React.FC = () => {
 
               <div className="pt-4 flex items-center justify-between border-t border-book-border">
                 <Link to="/cart">
-                  <Button variant="ghost" size="sm" leftIcon={<ArrowLeft className="w-4 h-4" />}>
+                  <Button variant="primary" size="sm" leftIcon={<ArrowLeft className="w-4 h-4" />}>
                     Back to Cart
                   </Button>
                 </Link>
-                <Button type="submit" variant="accent" size="md" rightIcon={<ArrowRight className="w-4 h-4" />}>
+                <Button type="submit" variant="primary" size="md" rightIcon={<ArrowRight className="w-4 h-4" />}>
                   Continue to Payment
                 </Button>
               </div>
@@ -488,10 +488,10 @@ export const CheckoutPage: React.FC = () => {
               </div>
 
               <div className="pt-4 flex items-center justify-between border-t border-book-border">
-                <Button type="button" variant="outline" size="sm" onClick={() => setStep(1)} leftIcon={<ArrowLeft className="w-4 h-4" />}>
+                <Button type="button" variant="primary" size="sm" onClick={() => setStep(1)} leftIcon={<ArrowLeft className="w-4 h-4" />}>
                   Back
                 </Button>
-                <Button type="submit" variant="accent" size="md" rightIcon={<ArrowRight className="w-4 h-4" />}>
+                <Button type="submit" variant="primary" size="md" rightIcon={<ArrowRight className="w-4 h-4" />}>
                   Review Order
                 </Button>
               </div>
@@ -564,7 +564,7 @@ export const CheckoutPage: React.FC = () => {
               <div className="pt-4 flex items-center justify-between border-t border-book-border">
                 <Button
                   type="button"
-                  variant="outline"
+                  variant="primary"
                   size="sm"
                   onClick={() => setStep(2)}
                   disabled={isProcessing}
@@ -574,7 +574,7 @@ export const CheckoutPage: React.FC = () => {
                 </Button>
                 <Button
                   type="button"
-                  variant="accent"
+                  variant="primary"
                   size="lg"
                   onClick={handlePlaceOrder}
                   isLoading={isProcessing}

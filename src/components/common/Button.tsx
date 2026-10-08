@@ -28,12 +28,12 @@ export const Button: React.FC<ButtonProps> = ({
   };
 
   const variantStyles = {
-    primary: 'bg-book-navy text-white hover:bg-slate-800 shadow-sm hover:shadow',
-    secondary: 'bg-book-muted text-book-charcoal hover:bg-book-border/70 border border-book-border',
-    accent: 'bg-book-burgundy text-white hover:bg-book-burgundy-hover shadow-sm hover:shadow',
-    outline: 'bg-transparent text-book-charcoal border border-book-border hover:bg-book-muted hover:border-book-stone-300',
-    ghost: 'bg-transparent text-book-charcoal hover:bg-book-muted',
-    danger: 'bg-book-error text-white hover:bg-red-800 shadow-sm'
+    primary:   'bg-book-navy text-white shadow-sm',
+    secondary: 'bg-book-navy text-white shadow-sm',
+    accent:    'bg-book-navy text-white shadow-sm',
+    outline:   'bg-book-navy text-white shadow-sm',
+    ghost:     'bg-book-navy text-white shadow-sm',
+    danger:    'bg-book-navy text-white shadow-sm'
   };
 
   return (

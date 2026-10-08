@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { Search, ShoppingCart, Heart, Menu, BookOpen, X } from 'lucide-react'
-import { useCartStore } from '../../store/cartStore'
-import { useWishlistStore } from '../../store/wishlistStore'
+import { useCart } from '../../context/CartContext'
+import { useWishlist } from '../../context/WishlistContext'
 
 const navLinks = [
   { to: '/', label: 'Home', exact: true },
@@ -19,8 +19,8 @@ export function Header() {
   const searchRef = useRef<HTMLInputElement>(null)
   const navigate = useNavigate()
 
-  const cartCount = useCartStore(s => s.totalItems())
-  const wishlistCount = useWishlistStore(s => s.items.length)
+  const { totalItems: cartCount, setIsCartOpen } = useCart()
+  const { wishlistCount } = useWishlist()
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8)
@@ -122,8 +122,9 @@ export function Header() {
               </Link>
 
               {/* Cart */}
-              <Link
-                to="/cart"
+              <button
+                type="button"
+                onClick={() => setIsCartOpen(true)}
                 className="btn-ghost relative p-2"
                 aria-label={`Cart${cartCount > 0 ? `, ${cartCount} items` : ''}`}
               >
@@ -136,7 +137,7 @@ export function Header() {
                     {cartCount > 9 ? '9+' : cartCount}
                   </span>
                 )}
-              </Link>
+              </button>
 
               {/* Mobile hamburger */}
               <button

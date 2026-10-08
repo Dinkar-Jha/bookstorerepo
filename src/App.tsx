@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Header } from './components/layout/Header';
 import { Footer } from './components/layout/Footer';
+import { CartDrawer } from './components/cart/CartDrawer';
 import { HomePage } from './pages/HomePage';
 import { CatalogPage } from './pages/CatalogPage';
 import { BookDetailPage } from './pages/BookDetailPage';
@@ -24,9 +25,12 @@ export const App: React.FC = () => {
         <CartProvider>
           <WishlistProvider>
             <Router>
-              <div className="flex flex-col min-h-screen bg-book-bg text-book-charcoal selection:bg-book-burgundy selection:text-white">
+              <div className="flex flex-col min-h-screen bg-cream text-primary selection:bg-accent selection:text-white">
                 {/* Header Navigation Shell */}
                 <Header />
+
+                {/* Global Cart Drawer */}
+                <CartDrawer />
                 
                 {/* Main Application Body */}
                 <main id="main-content" className="flex-1">

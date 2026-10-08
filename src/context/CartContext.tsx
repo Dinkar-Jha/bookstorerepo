@@ -59,43 +59,35 @@ export const CartProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       return false;
     }
 
-    let successAdded = false;
+    // Validate against current items snapshot before calling setItems
+    const currentItems = items;
+    const existingItem = currentItems.find(
+      (item) => item.book.id === book.id && item.selectedFormat === format
+    );
 
-    setItems((prev) => {
-      const existingIndex = prev.findIndex(
-        (item) => item.book.id === book.id && item.selectedFormat === format
-      );
-
-      if (existingIndex > -1) {
-        const currentQty = prev[existingIndex].quantity;
-        const newQty = currentQty + quantity;
-        
-        if (newQty > book.stock) {
-          error(`Cannot add more copies. Maximum available stock for "${book.title}" is ${book.stock}.`);
-          return prev;
-        }
-
-        const next = [...prev];
-        next[existingIndex] = {
-          ...next[existingIndex],
-          quantity: newQty
-        };
-        successAdded = true;
-        return next;
-      } else {
-        if (quantity > book.stock) {
-          error(`Cannot add ${quantity} copies. Maximum available stock for "${book.title}" is ${book.stock}.`);
-          return prev;
-        }
-        successAdded = true;
-        return [...prev, { book, selectedFormat: format, quantity }];
+    if (existingItem) {
+      const newQty = existingItem.quantity + quantity;
+      if (newQty > book.stock) {
+        error(`Cannot add more copies. Maximum available stock for "${book.title}" is ${book.stock}.`);
+        return false;
       }
-    });
-
-    if (successAdded) {
-      success(`Added "${book.title}" (${format}) to your cart.`);
+      setItems((prev) =>
+        prev.map((item) =>
+          item.book.id === book.id && item.selectedFormat === format
+            ? { ...item, quantity: newQty }
+            : item
+        )
+      );
+    } else {
+      if (quantity > book.stock) {
+        error(`Cannot add ${quantity} copies. Maximum available stock for "${book.title}" is ${book.stock}.`);
+        return false;
+      }
+      setItems((prev) => [...prev, { book, selectedFormat: format, quantity }]);
     }
-    return successAdded;
+
+    success(`Added "${book.title}" (${format}) to your cart.`);
+    return true;
   };
 
   const removeFromCart = (bookId: string, format: BookFormat) => {

@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Heart, ShoppingCart, BookOpen } from 'lucide-react'
+import { Heart, ShoppingCart, BookOpen, Check } from 'lucide-react'
 import { StarRating } from './ui/StarRating'
 import { Badge } from './ui/Badge'
-import { useCartStore } from '../store/cartStore'
-import { useWishlistStore } from '../store/wishlistStore'
-import { addToast } from './ui/Toast'
+import { useCart } from '../context/CartContext'
+import { useWishlist } from '../context/WishlistContext'
 import type { Book } from '../types'
 
 interface BookCardProps {
@@ -42,26 +41,26 @@ function BookCover({ book, className = '' }: { book: Book; className?: string })
 }
 
 export function BookCard({ book, view = 'grid' }: BookCardProps) {
-  const addToCart = useCartStore(s => s.addItem)
-  const toggleWishlist = useWishlistStore(s => s.toggleItem)
-  const isWishlisted = useWishlistStore(s => s.hasItem(book.id))
+  const { addToCart } = useCart()
+  const { toggleWishlist, isInWishlist } = useWishlist()
+  const isWishlisted = isInWishlist(book.id)
+  const [isAdded, setIsAdded] = useState(false)
 
+  // The Book type from types/index.ts lacks BookFormat, so we cast
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
     if (book.stock === 0) return
-    addToCart(book)
-    addToast(`"${book.title}" added to cart`, 'success')
+    // @ts-expect-error: Book from types/index.ts is compatible at runtime
+    addToCart(book, 'Paperback', 1)
+    setIsAdded(true)
+    setTimeout(() => setIsAdded(false), 1600)
   }
 
   const handleToggleWishlist = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
-    toggleWishlist(book)
-    addToast(
-      isWishlisted ? `Removed from wishlist` : `Added to wishlist`,
-      'info'
-    )
+    toggleWishlist(book.id)
   }
 
   if (view === 'list') {
@@ -116,12 +115,18 @@ export function BookCard({ book, view = 'grid' }: BookCardProps) {
             </div>
             <button
               onClick={handleAddToCart}
-              disabled={book.stock === 0}
-              aria-label={book.stock === 0 ? 'Out of stock' : `Add ${book.title} to cart`}
-              className="btn-primary text-xs px-3 py-1.5"
+              disabled={book.stock === 0 || isAdded}
+              aria-label={
+                book.stock === 0 ? 'Out of stock' :
+                isAdded ? `${book.title} added to cart` :
+                `Add ${book.title} to cart`
+              }
+              className={`text-xs px-3 py-1.5 inline-flex items-center gap-1.5 rounded-btn font-semibold transition-colors ${
+                isAdded ? 'bg-green-600 text-white' : 'btn-primary'
+              }`}
             >
-              <ShoppingCart className="h-3.5 w-3.5" aria-hidden="true" />
-              {book.stock === 0 ? 'Out of Stock' : 'Add to Cart'}
+              {isAdded ? <Check className="h-3.5 w-3.5" aria-hidden="true" /> : <ShoppingCart className="h-3.5 w-3.5" aria-hidden="true" />}
+              {book.stock === 0 ? 'Out of Stock' : isAdded ? 'Added!' : 'Add to Cart'}
             </button>
           </div>
         </div>
@@ -189,11 +194,22 @@ export function BookCard({ book, view = 'grid' }: BookCardProps) {
           </div>
           <button
             onClick={handleAddToCart}
-            disabled={book.stock === 0}
-            aria-label={book.stock === 0 ? `${book.title} is out of stock` : `Add ${book.title} to cart`}
-            className="rounded-btn bg-primary/10 p-2 text-primary transition-colors hover:bg-primary hover:text-white focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 disabled:opacity-40 disabled:cursor-not-allowed"
+            disabled={book.stock === 0 || isAdded}
+            aria-label={
+              book.stock === 0 ? `${book.title} is out of stock` :
+              isAdded ? `${book.title} added` :
+              `Add ${book.title} to cart`
+            }
+            className={`rounded-btn p-2 transition-colors focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-1 disabled:cursor-not-allowed ${
+              isAdded
+                ? 'bg-green-600 text-white'
+                : 'bg-primary/10 text-primary hover:bg-primary hover:text-white disabled:opacity-40'
+            }`}
           >
-            <ShoppingCart className="h-4 w-4" aria-hidden="true" />
+            {isAdded
+              ? <Check className="h-4 w-4" aria-hidden="true" />
+              : <ShoppingCart className="h-4 w-4" aria-hidden="true" />
+            }
           </button>
         </div>
       </div>

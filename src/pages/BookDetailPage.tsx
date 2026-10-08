@@ -201,17 +201,19 @@ export const BookDetailPage: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                  disabled={quantity <= 1}
                   aria-label="Decrease quantity"
-                  className="px-3.5 py-2.5 text-book-stone-700 hover:bg-book-muted rounded-l-md focus-ring"
+                  className="px-3.5 py-2.5 text-book-stone-700 hover:bg-book-muted rounded-l-md focus-ring disabled:opacity-40"
                 >
                   -
                 </button>
                 <span className="px-4 text-xs font-mono font-bold select-none">{quantity}</span>
                 <button
                   type="button"
-                  onClick={() => setQuantity(quantity + 1)}
+                  onClick={() => setQuantity(Math.min(book.stock, quantity + 1))}
+                  disabled={quantity >= book.stock}
                   aria-label="Increase quantity"
-                  className="px-3.5 py-2.5 text-book-stone-700 hover:bg-book-muted rounded-r-md focus-ring"
+                  className="px-3.5 py-2.5 text-book-stone-700 hover:bg-book-muted rounded-r-md focus-ring disabled:opacity-40"
                 >
                   +
                 </button>
